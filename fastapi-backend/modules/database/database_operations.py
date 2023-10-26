@@ -1,7 +1,9 @@
 import base64
+import json
 import sqlite3 as sl
 import random
 import string
+import ast
 
 
 def create_connection(db_file: str):
@@ -76,8 +78,9 @@ def get_data(connection, token):
         user_id = get_userid_by_token(cursor, token)
         data_query = "SELECT data from data WHERE user_id=?"
         cursor.execute(data_query, user_id)
-        data = cursor.fetchone()
-        return {"status": 200, "data": data, "description": "Here's your data"}
+        data = cursor.fetchone()[0]
+        restored_data = json.loads(base64.urlsafe_b64decode(data.encode()).decode())
+        return {"status": 200, "data": ast.literal_eval(restored_data), "description": "Here's your data"}
     return {"status": 403, "description": "Access denied!"}
 
 
@@ -88,7 +91,8 @@ def upload_data(connection, token, data):
         cursor = connection.cursor()
         user_id = get_userid_by_token(cursor, token)
         update_query = "UPDATE data SET data = ? WHERE user_id = ?"
-        cursor.execute(update_query, (data, user_id[0]))
+        encoded_dict = base64.urlsafe_b64encode(json.dumps(data).encode()).decode()
+        cursor.execute(update_query, (encoded_dict, user_id[0]))
         connection.commit()
         return {"status": 200, "description": "The data has been updated!"}
     return {"status": 403, "description": "Access denied!"}
