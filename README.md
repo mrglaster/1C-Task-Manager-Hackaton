@@ -98,11 +98,14 @@ If everything is fine
 
 ```
 {
-	"status": 200,
-	"data": [
-		"{'login': 'login'}"
-	],
-	"description": "Here's your data"
+  "status": 200,
+  "data": [
+    {
+      "date": "08.09.2023",
+      "name": "Go to the shop"
+    }
+  ],
+  "description": "Here's your data"
 }
 ```
 
@@ -124,8 +127,13 @@ Example request:
 
 ```
 {
-"token": "DNX0WfPEhlxiEWVtcuvpVCXv7baHgvlCc8TppfTDclnjzgLas6KnhnKpedNsSOJfTW8Kaa4aAaMzoAFoQlwjB9HXbx6tu7TmkzW23lZbAu1LizNfhdc1GhdskqsR0cz9rwDiigJv4sSAtFeum7sN4suVRv1CBa1E1z0BF4q6w0BGOAw6aAQBc8JDiEtC1Pi6rS9JMtCtZvco9jUeCGC2wSH4APvqwROrM6PnCdALwutkpDVGFzmaQcm3x7AH6y",
-"data": {"login": "login"}
+  "token": "DN...AH6y",
+  "data": [
+    {
+      "date": "08.09.2023",
+      "name": "Go to the shop"
+    }
+  ]
 }
 ```
 
