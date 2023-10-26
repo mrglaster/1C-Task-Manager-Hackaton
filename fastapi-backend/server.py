@@ -1,6 +1,6 @@
 import atexit
-import json
 import os
+import ssl
 
 import uvicorn
 from fastapi import FastAPI, Request
@@ -17,6 +17,7 @@ CONNECTION = create_connection(DATABASE_PATH)
 async def register_user(info: Request):
     """Function Processing Register Request
     main parameters:
+        :param info:
         :param login - login of the user
         :param password - password of the user
     """
@@ -57,7 +58,9 @@ def on_exit():
 
 def main():
     atexit.register(on_exit)
-    uvicorn.run(f"{os.path.basename(__file__)[:-3]}:app", log_level="info")
+    ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    ssl_context.load_cert_chain("./ssl/cert.crt", "./ssl/key.pem")
+    uvicorn.run(f"{os.path.basename(__file__)[:-3]}:app", port=443, ssl_keyfile="./ssl/key.pem", ssl_certfile="./ssl/cert.crt", log_level="info")
 
 
 if __name__ == "__main__":
